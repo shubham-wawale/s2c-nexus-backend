@@ -1,4 +1,4 @@
-import userController from './user.controller';
+import companyController from './user.controller';
 export {
-   userController
+   companyController,
 };

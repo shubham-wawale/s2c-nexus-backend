@@ -1,4 +1,6 @@
-import User from './user.model';
+import {CompanyDrive,CompanyUser,CompanyInfo} from './user.model';
 export {
-   User,
+   CompanyInfo,
+   CompanyDrive,
+   CompanyUser
 };

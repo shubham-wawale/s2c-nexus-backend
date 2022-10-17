@@ -1,4 +1,11 @@
 import mongoose from 'mongoose';
-import userSchema from '../schemas/user.schema';
-const User = mongoose.model('User', userSchema);
-export default User;
+import {companyCredentialSchema,companyInfoSchema,driveSchema} from '../schemas/user.schema';
+const CompanyUser = mongoose.model('CompanyUser', companyCredentialSchema);
+const CompanyInfo = mongoose.model('CompanyInfo', companyInfoSchema);
+const CompanyDrive = mongoose.model('CompanyDrive', driveSchema);
+
+export {
+    CompanyUser,
+    CompanyDrive,
+    CompanyInfo
+}
