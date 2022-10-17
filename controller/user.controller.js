@@ -2,6 +2,8 @@ import express from 'express';
 import { User } from "../database/models";
 import sha256 from "sha256";
 
+const userController = express.Router();
+
 userController.get("/", (req, res) => {
   User.find({}, (err, result) => {
     res.status(200).json({
