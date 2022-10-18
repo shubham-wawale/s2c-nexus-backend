@@ -29,8 +29,9 @@ companyController.post("/login", (req, res) => {
  */
 
 companyController.post("/signup", (req, res) => {
-  const { email, password } = req.body;
+  const { name,email, password } = req.body;
   const companyUserData = {
+    name:name,
     email,
     hashedPassword: sha256(password)
   };
