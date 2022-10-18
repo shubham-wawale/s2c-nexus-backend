@@ -18,6 +18,7 @@ app.use(bodyParser.json());
 // use all controllers(APIs) here
 app.use('/company', companyController);
 
+
 // Start Server here
 app.listen(8080, () => {
   console.log('Example app listening on port 8080!');

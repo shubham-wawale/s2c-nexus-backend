@@ -29,7 +29,8 @@ companyController.post("/login", (req, res) => {
  */
 
 companyController.post("/signup", (req, res) => {
-  const { name,email, password } = req.body;
+  if (req.body) {
+    const { name,email, password } = req.body;
   const companyUserData = {
     name:name,
     email,
@@ -50,6 +51,11 @@ companyController.post("/signup", (req, res) => {
       res.status(200).send("Data already exists");
     }
   })
+  }
+  else{
+    res.send("Body not available");
+  }
+  
 });
 
 companyController.get("/drives", (req, res) => {
