@@ -64,9 +64,18 @@ companyController.get("/drives", (req, res) => {
 
 
 companyController.post("/createDrive", (req, res) => {
-  const { companyName, driveName, branchesPreferred, batch, eligibility, driveRole, ctcOffered, jobDescription, skillsRequired } = req.body;
+
+  const { companyName,
+    driveName,
+    branchesPreferred,
+    batch, eligibility,
+    driveRole,
+    ctcOffered,
+    jobDescription,
+    skillsRequired } = req.body;
+
   const companyDriveData = {
-    companyName: companyName, 
+    companyName: companyName,
     driveName: driveName,
     branchesPreferred: branchesPreferred,
     batch: batch,
@@ -76,26 +85,51 @@ companyController.post("/createDrive", (req, res) => {
     jobDescription: jobDescription,
     skillsRequired: skillsRequired
   };
+
   const newDrive = new CompanyDrive(companyDriveData);
   newDrive
     .save()
     .then(data => {
       res.status(200).send("Drive added successfully");
     })
-    .catch (err => {
-      res.status(400).send("unable to save to database");
-  })
+    .catch(err => {
+      res.status(400).send("Unable to save to database");
+    })
+});
 
-  });
+companyController.post("/updateDrive", (req, res) => {
+  !req.body.driveId ? res.json({ success: false, error:"Drive Id not recieved." }) :
+  CompanyDrive.updateOne({ _id: req.body.driveId }, req.body).then(err =>{
+    console.log(err)
+    if(err.matchedCount == 1){
+      res.status(200).json({success: true,message:`Updated drive ID ${req.body.driveId} successfully.`})
+    } else {
+      res.json({ success: false })
+    }
+  }).catch(err =>{
+    res.json({ success: false, error: err })
+  })
+})
+
+companyController.post("/deleteDrive", (req,res)=> {
+  !req.body.driveId ? res.json({ success: false, error:"Drive Id not recieved." }) :
+  CompanyDrive.deleteOne( { _id: req.body.driveId}).then(err => {
+    err.deletedCount==1 ? res.status(200).json({
+      success: true, 
+      message:`Deleted drive ID ${req.body.driveId} successfully.`}) :
+    res.json({ success: false })
+  })
+})
+
 export default companyController;
 
 
-// { "companyName":"TCS", 
-// "driveName": "TCS NQT 2022", 
-// "branchesPreferred": "IT,CS", 
-// "batch":"2023", 
-// "eligibility":["10th-80%","12th-70%"], 
-// "driveRole":"System Engineer", 
-// "ctcOffered":"4", 
-// "jobDescription":["Security","Maintainence"], 
+// { "companyName":"TCS",
+// "driveName": "TCS NQT 2022",
+// "branchesPreferred": "IT,CS",
+// "batch":"2023",
+// "eligibility":["10th-80%","12th-70%"],
+// "driveRole":"System Engineer",
+// "ctcOffered":"4",
+// "jobDescription":["Security","Maintainence"],
 // "skillsRequired": ["Java","Python"]}
