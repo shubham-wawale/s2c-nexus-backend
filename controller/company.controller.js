@@ -72,7 +72,7 @@ companyController.get("/drives", (req, res) => {
 
 companyController.post("/createDrive", (req, res) => {
 
-  const { companyName,
+  const { companyId,
     driveName,
     branchesPreferred,
     batch, eligibility,
@@ -82,7 +82,7 @@ companyController.post("/createDrive", (req, res) => {
     skillsRequired } = req.body;
 
   const companyDriveData = {
-    companyName: companyName,
+    companyId: companyId,
     driveName: driveName,
     branchesPreferred: branchesPreferred,
     batch: batch,
@@ -100,7 +100,7 @@ companyController.post("/createDrive", (req, res) => {
       res.status(200).json({success: true, message:"Drive added successfully"});
     })
     .catch(err => {
-      res.status(400).json({success: false, message:"Unable to add drive"});
+      res.status(400).json({success: false, message:"Unable to add drive",error: err});
     })
 });
 
@@ -131,12 +131,12 @@ companyController.post("/deleteDrive", (req, res) => {
 export default companyController;
 
 
-// { "companyName":"TCS",
-// "driveName": "TCS NQT 2022",
-// "branchesPreferred": "IT,CS",
-// "batch":"2023",
-// "eligibility":["10th-80%","12th-70%"],
-// "driveRole":"System Engineer",
-// "ctcOffered":"4",
-// "jobDescription":["Security","Maintainence"],
-// "skillsRequired": ["Java","Python"]}
+  // { "companyName":"TCS",
+  // "driveName": "TCS NQT 2022",
+  // "branchesPreferred": "IT,CS",
+  // "batch":"2023",
+  // "eligibility":["10th-80%","12th-70%"],
+  // "driveRole":"System Engineer",
+  // "ctcOffered":"4",
+  // "jobDescription":["Security","Maintainence"],
+  // "skillsRequired": ["Java","Python"]}
