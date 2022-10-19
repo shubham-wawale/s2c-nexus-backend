@@ -2,7 +2,6 @@ import { Schema } from 'mongoose';
 import sha256 from 'sha256';
 
 const companyCredentialSchema = new Schema({
-    name: { type: String, required:true },
     hashedPassword: { type: String, required: true },
     email: { type: String, required: true },
 });
@@ -11,6 +10,7 @@ const companyCredentialSchema = new Schema({
  */
 
 const companyInfoSchema = new Schema({
+    companyId: { type: String, required: true },
     studentsHired: { type: Number, required: true },
     name: { type: String, required: true },
     type: { type: String, required: true },
@@ -20,7 +20,7 @@ const companyInfoSchema = new Schema({
 });
 
 const driveSchema = new Schema({
-    companyName: { type: String, required: true },
+    companyId: { type: String, required: true },
     driveName: { type: String, required: true },
     branchesPreferred: { type: String, required: true },
     batch: { type: Number, required: true },

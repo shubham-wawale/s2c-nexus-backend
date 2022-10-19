@@ -8,12 +8,12 @@ companyController.post("/login", (req, res) => {
   const { email, password } = req.body;
   CompanyUser.findOne({ email: email }).then(user => {
     if (!user) {
-      res.json({ success: false, error: "User does not exist." })
+      res.json({ success: false, message: `User with email ${email} does not exist.` })
     } else {
       if (user.hashedPassword != sha256(password)) {
-        res.json({ success: false, error: "Wrong Password" })
+        res.json({ success: false, message: "Incorrect Password" })
       } else {
-        res.json({ success: true })
+        res.json({ success: true, companyId: user._id, message:"User successfully logged in."})
       }
     }
   })
@@ -30,41 +30,41 @@ companyController.post("/login", (req, res) => {
 
 companyController.post("/signup", (req, res) => {
   if (req.body) {
-    const { name,email, password } = req.body;
-  const companyUserData = {
-    name:name,
-    email,
-    hashedPassword: sha256(password)
-  };
-  CompanyUser.find({ email: email }).then(user => {
-    if (!user) {
-      const newUser = new CompanyUser(companyUserData);
-      newUser
-        .save()
-        .then(data => {
-          res.status(200).send("Data added successfully");
-        })
-        .catch(err => {
-          res.status(400).send("unable to save to database");
-        })
-    } else {
-      res.status(200).send("Data already exists");
-    }
-  })
+    const { email, password } = req.body;
+    const companyUserData = {
+      email,
+      hashedPassword: sha256(password)
+    };
+    CompanyUser.find({ email: email }).then(user => {
+      console.log(user)
+      if (user.length==0) {
+        const newUser = new CompanyUser(companyUserData);
+        newUser
+          .save()
+          .then(data => {
+            res.status(200).json({ success: true, companyId: data._id, message:"User registration successful." });
+          })
+          .catch(err => {
+            res.status(404).json({success: false, message : "User registration unsuccessful"});
+          })
+      } else {
+        res.status(200).json({success: false, message: `User with the email ${email} already exists.`});
+      }
+    })
   }
-  else{
-    res.send("Body not available");
+  else {
+    res.json({message: "Invalid request object."});
   }
-  
+
 });
 
 companyController.get("/drives", (req, res) => {
-  const { companyName } = req.body;
-  CompanyDrive.find({ companyName: companyName }).then(drives => {
+  const { companyId } = req.body;
+  CompanyDrive.find({ companyId: companyId }).then(drives => {
     if (!drives) {
-      res.json({ success: false, error: "No drives found." })
+      res.json({ success: false, message: "No drives found." })
     } else {
-      res.json({ success: true, data: drives })
+      res.json({ success: true, drives: drives })
     }
   })
 })
@@ -97,35 +97,35 @@ companyController.post("/createDrive", (req, res) => {
   newDrive
     .save()
     .then(data => {
-      res.status(200).send("Drive added successfully");
+      res.status(200).json({success: true, message:"Drive added successfully"});
     })
     .catch(err => {
-      res.status(400).send("Unable to save to database");
+      res.status(400).json({success: false, message:"Unable to add drive"});
     })
 });
 
 companyController.post("/updateDrive", (req, res) => {
-  !req.body.driveId ? res.json({ success: false, error:"Drive Id not recieved." }) :
-  CompanyDrive.updateOne({ _id: req.body.driveId }, req.body).then(err =>{
-    console.log(err)
-    if(err.matchedCount == 1){
-      res.status(200).json({success: true,message:`Updated drive ID ${req.body.driveId} successfully.`})
-    } else {
-      res.json({ success: false })
-    }
-  }).catch(err =>{
-    res.json({ success: false, error: err })
-  })
+  !req.body.driveId ? res.json({ success: false, error: "Drive Id not recieved." }) :
+    CompanyDrive.updateOne({ _id: req.body.driveId }, req.body).then(err => {
+      err.matchedCount == 1 ? res.status(200).json({ 
+          success: true,
+          message: `Updated drive ID ${req.body.driveId} successfully.` })
+        : res.json({ success: false })
+    }).catch(err => {
+      res.json({ success: false, error: err })
+    })
 })
 
-companyController.post("/deleteDrive", (req,res)=> {
-  !req.body.driveId ? res.json({ success: false, error:"Drive Id not recieved." }) :
-  CompanyDrive.deleteOne( { _id: req.body.driveId}).then(err => {
-    err.deletedCount==1 ? res.status(200).json({
-      success: true, 
-      message:`Deleted drive ID ${req.body.driveId} successfully.`}) :
-    res.json({ success: false })
-  })
+companyController.post("/deleteDrive", (req, res) => {
+  !req.body.driveId ? res.json({ success: false, error: "Drive Id not recieved." }) :
+    CompanyDrive.deleteOne({ _id: req.body.driveId }).then(err => {
+      err.deletedCount == 1 ? res.status(200).json({
+        success: true,
+        message: `Deleted drive ID ${req.body.driveId} successfully.`}) 
+      : res.json({ success: false })
+    }).catch(err => {
+      res.json({ success: false, error: err })
+    })
 })
 
 export default companyController;

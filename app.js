@@ -2,13 +2,21 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import mongoose from "mongoose";
-import * as dotenv from 'dotenv' 
+import * as dotenv from 'dotenv' ;
+import cors from 'cors';
 import { 
   companyController,
 } from './controller';
 
 // Init an Express App.
 const app = express();
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    methods: ['GET', 'POST'],
+    credentials: true,
+  }),
+);
 dotenv.config()
 
 // Use your dependencies here
