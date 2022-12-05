@@ -6,6 +6,7 @@ import * as dotenv from 'dotenv' ;
 import cors from 'cors';
 import { 
   companyController,
+  studentController
 } from './controller';
 
 // Init an Express App.
@@ -24,7 +25,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 // use all controllers(APIs) here
-app.use('/company', companyController);
+app.use("/company", companyController);
+app.use("/student", studentController);
 
 
 // Start Server here

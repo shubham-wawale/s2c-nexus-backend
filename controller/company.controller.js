@@ -59,7 +59,7 @@ companyController.post("/signup", (req, res) => {
 });
 
 companyController.get("/drives", (req, res) => {
-  const { companyId } = req.body;
+  const { companyId } = req.query;
   CompanyDrive.find({ companyId: companyId }).then(drives => {
     if (!drives) {
       res.json({ success: false, message: "No drives found." })

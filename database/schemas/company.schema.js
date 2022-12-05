@@ -23,12 +23,12 @@ const driveSchema = new Schema({
     companyId: { type: String, required: true },
     driveName: { type: String, required: true },
     branchesPreferred: { type: String, required: true },
-    batch: { type: Number, required: true },
-    eligibility: { type: [String], required: true },
+    batch: { type: String, required: true },
+    eligibility: { type: String, required: true },
     driveRole: { type: String, required: true },
-    ctcOffered: { type: Number, required: true },
-    jobDescription: { type: [String], required: true },
-    skillsRequired: { type: [String], required: true }
+    ctcOffered: { type: String, required: true },
+    jobDescription: { type: String, required: true },
+    skillsRequired: { type: String, required: true }
 
 });
 
