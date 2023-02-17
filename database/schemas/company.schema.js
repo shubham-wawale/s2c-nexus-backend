@@ -22,13 +22,22 @@ const companyInfoSchema = new Schema({
 const driveSchema = new Schema({
     companyId: { type: String, required: true },
     driveName: { type: String, required: true },
-    branchesPreferred: { type: String, required: true },
-    batch: { type: String, required: true },
-    eligibility: { type: String, required: true },
-    driveRole: { type: String, required: true },
+    branchesPreferred: { type: [String], required: true },
+    batch: { type: String, required: true }, 
+    tenthPercentage: { type: String, required: true },
+    twelfthPercentage: { type: String, required: true },
+    cgpa: { type: String, required: true },
+    cgpaInPercentage: { type: String, required: true },
+    numberOfLiveKT: { type: String, required: true },
+    numberOfDeadKT: { type: String, required: true },
+    numberOfAcademicGaps: { type: String, required: true },
+    numberOfDegreeGaps: { type: String, required: true },
     ctcOffered: { type: String, required: true },
     jobDescription: { type: String, required: true },
-    skillsRequired: { type: String, required: true }
+    jobRole: { type: String, required: true },
+    jobType: { type: String, required: true },
+    jobLocation: { type: [String], required: true },
+    skillsRequired: { type: [String], required: true }
 
 });
 

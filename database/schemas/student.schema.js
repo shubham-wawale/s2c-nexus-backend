@@ -6,8 +6,8 @@ const studentCredentialSchema = new Schema({
 });
 
 const tenthDetailsSchema = new Schema({
-    marks: {type: String, required: true},
-    passingYear: {type: String, required: true}
+    marks: {type: String},
+    passingYear: {type: String}
 })
 
 const higherSecondaryDetailsSchema = new Schema({
@@ -15,12 +15,17 @@ const higherSecondaryDetailsSchema = new Schema({
     passingYear: {type: String}
 })
 
+const semesterSchema = new Schema({
+    semester: {type: String},
+    gpa: {type: String},
+    marksheet: {data: Buffer, contentType: String}
+})
+
 const degreeDetailsSchema = new Schema({
-    name: {type: String, required: true},
-    startDate: {type: String, required: true},
-    completionDate: {type: String, required: true},
-    semesterGPA: [String],
-    marksheets: [{data: Buffer, contentType: String, required: false}]
+    name: {type: String},
+    startDate: {type: String},
+    completionDate: {type: String},
+    semester: [semesterSchema]
 })
 
 const studentPersonalDetailsSchema = new Schema({
@@ -35,7 +40,7 @@ const studentAcademicDetailsSchema = new Schema({
     tenth: tenthDetailsSchema,
     twelfth: higherSecondaryDetailsSchema,
     diploma: higherSecondaryDetailsSchema,
-    department: {type: String, required: true},
+    department: {type: String},
     degree: degreeDetailsSchema,
     activeBacklogs: {type: String},
     previousBacklogs: {type: String},
@@ -43,15 +48,15 @@ const studentAcademicDetailsSchema = new Schema({
 })
 
 const studentProjectDetailsSchema = new Schema({
-    name: {type: String, required: true},
-    description: {type: String, required: true}
+    name: {type: String},
+    description: {type: String}
 })
 
 const studentExperienceDetailsSchema = new Schema({
-    position: {type: String, required: true},
-    duration: {type: String, required: true},
-    organisation: {type: String, required: true},
-    workDescription: {type: String, required: true}
+    position: {type: String},
+    duration: {type: String},
+    organisation: {type: String},
+    workDescription: {type: String}
 })
 
 

@@ -88,20 +88,23 @@ studentController.get("/getDetails", (req, res) => {
 // })
 
 studentController.post("/updateDetails", (req, res) => {
-  req.body.studentId
+  if (req.body.studentId
     && req.body.key
-    && req.body.newData ?
+    && req.body.newData) {
     StudentInfo.updateOne({ _id: req.body.studentId },
-      { [req.body.key]: req.body.newData } 
+      { [req.body.key]: req.body.newData }
       , { multi: true }).then(data => {
-          data.matchedCount == 1 ? res.status(200).json({
+        data.matchedCount == 1 ? res.status(200).json({
           success: true,
           message: `UPDATED STUDENT RECORD SUCCESSFULLY`
         }) :
           res.status(400).json({ success: false, message: "STUDENT RECORD NOT UPDATED" })
       }).catch(error => {
         res.status(400).json({ success: false, error: error, message: "STUDENT RECORD NOT UPDATED" })
-      }) : res.status(400).json({ success: false, message: "INVALID REQUEST OBJECT" })
+      })
+  } else {
+    res.status(400).json({ success: false, message: "INVALID REQUEST OBJECT" })
+  }
 })
 
 export default studentController;
