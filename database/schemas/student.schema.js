@@ -57,8 +57,12 @@ const studentProjectDetailsSchema = new Schema({
 const studentExperienceDetailsSchema = new Schema({
     position: {type: String},
     duration: {type: String},
+    location:  {type: String},
+    jobType: {type: String},
     organisation: {type: String},
-    workDescription: {type: String}
+    workDescription: {type: String},
+    startDate: {type: String},
+    endDate: {type: String}
 })
 
 
