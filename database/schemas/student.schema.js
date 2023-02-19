@@ -46,7 +46,8 @@ const studentAcademicDetailsSchema = new Schema({
     previousBacklogs: {type: String},
     academicGap: {type: String},
     degreeGap: {type: String},
-    certifications: {type: Array, "default": []}
+    certifications: {type: Array, "default": []},
+    technicalSkills: {type: [String]},
 })
 
 const studentProjectDetailsSchema = new Schema({
