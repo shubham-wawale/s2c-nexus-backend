@@ -1,9 +1,10 @@
-import {CompanyDrive,CompanyUser,CompanyInfo} from './company.model';
+import {CompanyDrive,CompanyUser,CompanyInfo, AppliedStudentDrive} from './company.model';
 import { StudentInfo, StudentCredential} from './student.model';
 export {
    CompanyInfo,
    CompanyDrive,
    CompanyUser,
+   AppliedStudentDrive,
    StudentInfo,
-   StudentCredential
+   StudentCredential,
 };

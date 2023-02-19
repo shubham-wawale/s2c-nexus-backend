@@ -1,5 +1,5 @@
 import express from 'express';
-import { StudentCredential, StudentInfo } from "../database/models";
+import { StudentCredential, StudentInfo, CompanyDrive } from "../database/models";
 import sha256 from "sha256";
 
 const studentController = express.Router();
@@ -55,12 +55,22 @@ studentController.get("/getDetails", (req, res) => {
   var { studentId } = req.query
   StudentInfo.findById(studentId).then(data => {
     if (data) {
-      res.status(200).json({ success: true, data: data, message: "Student Record fetched successfully." })
+      res.status(200).json({ success: true, studentData: data, message: "Student Record fetched successfully." })
     } else {
       res.status(400).json({ success: false, message: "Student Record fetched could not be fetched." })
     }
   }).catch(error => {
     res.status(400).json({ success: false, error: error, message: "Student Record could not be fetched." })
+  })
+})
+
+studentController.get("/drives", (req, res) => {
+  CompanyDrive.find().then(drives => {
+    if (!drives) {
+      res.json({ success: false, message: "No drives found." })
+    } else {
+      res.json({ success: true, drives: drives })
+    }
   })
 })
 

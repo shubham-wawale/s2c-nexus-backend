@@ -41,8 +41,9 @@ const driveSchema = new Schema({
 
 });
 
-const companyDriveSchema = new Schema({
-    drives: { type: [driveSchema] }
+const appliedStudentsDriveSchema = new Schema({
+    driveId: { type: String, required: true },
+    appliedStudents: {type: Array, "default": [] }
 });
 
 
@@ -53,7 +54,7 @@ companyCredentialSchema.methods.comparePassword = function comparePassword(passw
 export {
     companyCredentialSchema,
     companyInfoSchema,
-    companyDriveSchema,
+    appliedStudentsDriveSchema,
     driveSchema
 };
 

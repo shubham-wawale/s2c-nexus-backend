@@ -1,5 +1,5 @@
 import express from 'express';
-import { CompanyUser, CompanyInfo, CompanyDrive } from "../database/models";
+import { CompanyUser, CompanyInfo, CompanyDrive, AppliedStudentDrive } from "../database/models";
 import sha256 from "sha256";
 
 const companyController = express.Router();
@@ -58,6 +58,17 @@ companyController.post("/signup", (req, res) => {
 
 });
 
+companyController.get("/driveInfo", (req,res)=> {
+  const {driveId} = req.query;
+  CompanyDrive.find({_id: driveId }).then(drive=> {
+    if (!drive) {
+      res.json({ success: false, message: "No drive found." })
+    } else {
+      res.json({ success: true,message: "Drive retrieved",  drive: drive })
+    }
+  })
+})
+
 companyController.get("/drives", (req, res) => {
   const { companyId } = req.query;
   CompanyDrive.find({ companyId: companyId }).then(drives => {
@@ -65,6 +76,17 @@ companyController.get("/drives", (req, res) => {
       res.json({ success: false, message: "No drives found." })
     } else {
       res.json({ success: true, drives: drives })
+    }
+  })
+})
+
+companyController.get("/appliedStudentsDrive", (req, res) => {
+  const { driveId } = req.query;
+  AppliedStudentDrive.find({ driveId: driveId }).then(drive => {
+    if (!drive) {
+      res.json({ success: false, message: "No drives found." })
+    } else {
+      res.json({ success: true, drive: drive })
     }
   })
 })
@@ -146,6 +168,8 @@ companyController.post("/deleteDrive", (req, res) => {
       res.json({ success: false, error: err })
     })
 })
+
+
 
 export default companyController;
 

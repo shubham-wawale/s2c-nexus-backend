@@ -22,10 +22,8 @@ const semesterSchema = new Schema({
 })
 
 const degreeDetailsSchema = new Schema({
-    name: {type: String},
-    startDate: {type: String},
-    completionDate: {type: String},
-    semester: [semesterSchema]
+    
+    
 })
 
 const studentPersonalDetailsSchema = new Schema({
@@ -41,10 +39,14 @@ const studentAcademicDetailsSchema = new Schema({
     twelfth: higherSecondaryDetailsSchema,
     diploma: higherSecondaryDetailsSchema,
     department: {type: String},
-    degree: degreeDetailsSchema,
+    degreeCgpa: {type: String},
+    degreeCgpaInPercentage: {type: String},
+    degreePassingYear: {type: String},
     activeBacklogs: {type: String},
     previousBacklogs: {type: String},
-    gapYear: {type: String}
+    academicGap: {type: String},
+    degreeGap: {type: String},
+    certifications: {type: Array, "default": []}
 })
 
 const studentProjectDetailsSchema = new Schema({
