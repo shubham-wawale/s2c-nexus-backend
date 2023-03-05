@@ -65,11 +65,21 @@ studentController.get("/getDetails", (req, res) => {
 })
 
 studentController.get("/drives", (req, res) => {
+  const {studentData} = req.query
   CompanyDrive.find().then(drives => {
     if (!drives) {
       res.json({ success: false, message: "No drives found." })
     } else {
-      res.json({ success: true, drives: drives })
+      var filteredDrives = drives.filter(drive => (
+        studentData.academicDetails.tenth.marks >= parseInt(drive.tenthPercentage) &&
+        studentData.academicDetails.twelfth.marks >= parseInt(drive.twelfthPercentage) &&
+        studentData.academicDetails.degreeCgpa >= parseInt(drive.cgpa) &&
+        studentData.academicDetails.activeBacklogs <= parseInt(drive.numberOfLiveKT) &&
+        studentData.academicDetails.previousBacklogs <= parseInt(drive.numberOfDeadKT) &&
+        studentData.academicDetails.academicGap <= parseInt(drive.numberOfAcademicGaps) &&
+        studentData.academicDetails.degreeGap <= parseInt(drive.numberOfDegreeGaps)
+      ))
+      res.json({ success: true, drives: filteredDrives })
     }
   })
 })

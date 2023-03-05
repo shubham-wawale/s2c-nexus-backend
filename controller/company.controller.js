@@ -6,14 +6,14 @@ const companyController = express.Router();
 
 companyController.post("/login", (req, res) => {
   const { email, password } = req.body;
-  CompanyUser.findOne({ email: email }).then(user => {
-    if (!user) {
-      res.json({ success: false, message: `User with email ${email} does not exist.` })
+  CompanyInfo.findOne({ email: email }).then(company => {
+    if (!company) {
+      res.json({ success: false, message: `Company with email ${email} does not exist.` })
     } else {
-      if (user.hashedPassword != sha256(password)) {
+      if (company.hashedPassword != sha256(password)) {
         res.json({ success: false, message: "Incorrect Password" })
       } else {
-        res.json({ success: true, companyId: user._id, message:"User successfully logged in."})
+        res.json({ success: true, companyId: company._id, message:"Company successfully logged in."})
       }
     }
   })
@@ -30,25 +30,28 @@ companyController.post("/login", (req, res) => {
 
 companyController.post("/signup", (req, res) => {
   if (req.body) {
-    const { email, password } = req.body;
-    const companyUserData = {
+    const { email, password, name, type, yearOfEstablishment, vision } = req.body;
+    const companyData = {
       email,
-      hashedPassword: sha256(password)
+      hashedPassword: sha256(password),
+      name,
+      type,
+      yearOfEstablishment,
+      vision
     };
-    CompanyUser.find({ email: email }).then(user => {
-      console.log(user)
-      if (user.length==0) {
-        const newUser = new CompanyUser(companyUserData);
-        newUser
+    CompanyInfo.find({ email: email }).then(company => {
+      if (company.length==0) {
+        const newCompany = new CompanyInfo(companyData);
+        newCompany
           .save()
           .then(data => {
-            res.status(200).json({ success: true, companyId: data._id, message:"User registration successful." });
+            res.status(200).json({ success: true, companyId: data._id, message:"Company registration successful." });
           })
           .catch(err => {
-            res.status(404).json({success: false, message : "User registration unsuccessful"});
+            res.status(404).json({success: false, message : "Company registration unsuccessful"});
           })
       } else {
-        res.status(200).json({success: false, message: `User with the email ${email} already exists.`});
+        res.status(200).json({success: false, message: `Company with the email ${email} already exists.`});
       }
     })
   }
@@ -82,12 +85,45 @@ companyController.get("/drives", (req, res) => {
 
 companyController.get("/appliedStudentsDrive", (req, res) => {
   const { driveId } = req.query;
-  AppliedStudentDrive.find({ driveId: driveId }).then(drive => {
+  CompanyDrive.find({ driveId: driveId }).then(drive => {
     if (!drive) {
       res.json({ success: false, message: "No drives found." })
     } else {
-      res.json({ success: true, drive: drive })
+      res.json({ success: true, appliedStudents : drive.appliedStudents })
     }
+  })
+})
+
+companyController.post("/addStudentToDrive", (req,res) => {
+  const {studentData, driveId} = req.body
+  if (CompanyDrive.find({_id: driveId, appliedStudents: { $in: [studentData._id]} }).count()) {
+    res.json({
+      success: false,
+      message: "Already applied to the drive."
+    })
+  } else {
+  CompanyDrive.updateOne({_id: driveId}, { $push: {appliedStudents: studentData} })
+    .then(update => {
+      update.matchedCount==1 ? res.status(200).json({ 
+        success: true,
+        message: `Student applied to drive successfully.` })
+      : res.json({ success: false, message: "Could not apply to drive." })
+    }).catch(err => {
+      res.json({ success: false, message: err })
+    })
+  }
+})
+
+companyController.post("/removeStudentFromDrive", (req,res)=> {
+  const {studentId, driveId} = req.body
+  CompanyDrive.updateOne({_id: driveId}, {$pull: {appliedStudents:  {id: studentId}}})
+  .then(update => {
+    update.matchedCount==1 ? res.status(200).json({ 
+      success: true,
+      message: `Student removed from drive successfully.` })
+    : res.json({ success: false, message: "Could not delete student." })
+  }).catch(err => {
+    res.json({ success: false, message: err })
   })
 })
 

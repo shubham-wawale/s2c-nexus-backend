@@ -10,13 +10,14 @@ const companyCredentialSchema = new Schema({
  */
 
 const companyInfoSchema = new Schema({
-    companyId: { type: String, required: true },
-    studentsHired: { type: Number, required: true },
+    hashedPassword: { type: String, required: true },
+    email: { type: String, required: true },
+    studentsHired: { type: Number},
     name: { type: String, required: true },
     type: { type: String, required: true },
     yearOfEstablishment: { type: String, required: true },
-    goalDescription: { type: String, required: true },
-    popularRoles: { type: [String], required: true }
+    vision: { type: String, required: true },
+    popularRoles: { type: [String]}
 });
 
 const driveSchema = new Schema({
@@ -37,8 +38,8 @@ const driveSchema = new Schema({
     jobRole: { type: String, required: true },
     jobType: { type: String, required: true },
     jobLocation: { type: [String], required: true },
-    skillsRequired: { type: [String], required: true }
-
+    skillsRequired: { type: [String], required: true },
+    appliedStudents: {type: Array, "default": [] }
 });
 
 const appliedStudentsDriveSchema = new Schema({
