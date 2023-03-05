@@ -96,7 +96,7 @@ companyController.get("/appliedStudentsDrive", (req, res) => {
 
 companyController.post("/addStudentToDrive", (req,res) => {
   const {studentData, driveId} = req.body
-  if (CompanyDrive.find({_id: driveId, appliedStudents: { $in: [studentData._id]} }).count()) {
+  if (CompanyDrive.find({_id: driveId, appliedStudents: { $in: [studentData._id]} }).count() == 1) {
     res.json({
       success: false,
       message: "Already applied to the drive."
