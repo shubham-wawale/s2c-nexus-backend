@@ -7,7 +7,8 @@ import cors from 'cors';
 import { 
   companyController,
   studentController,
-  discussionController
+  discussionController,
+  emailController
 } from './controller';
 
 // Init an Express App.
@@ -29,6 +30,7 @@ app.use(bodyParser.json());
 app.use("/company", companyController);
 app.use("/student", studentController);
 app.use("/discussion", discussionController);
+app.use("/email", emailController)
 
 
 // Start Server here
