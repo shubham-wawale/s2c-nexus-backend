@@ -11,7 +11,13 @@ app.use(express.static(buildPath));
 
 const emailController = express.Router(); 
 emailController.post('/users',(req,res)=>{
- 
+  const {driveData} = req.body;
+  var mailList = []
+  driveData.appliedStudents.map(student=> {
+    if(student.rejected==false) {
+      mailList.push(student.email)
+    }
+  })
     var transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
@@ -22,7 +28,7 @@ emailController.post('/users',(req,res)=>{
  
     var mailOptions = {
         from: 'ashutoshkarwa18@gmail.com',// sender address
-        to: 'akanshatripathi2601@gmail.com', // list of receivers
+        to: mailList, // list of receivers
         subject: req.body.subject, // Subject line
         text:req.body.description,
         html: `
@@ -30,7 +36,7 @@ emailController.post('/users',(req,res)=>{
         <p>You have a new contact request.</p>
         <h3>Contact Details</h3>
         <ul>
-            <li>Email:akanshatripathi2601@gmail.com </li>
+            <li>Email: From s2c-nexus@limited </li>
             <li>Subject: ${req.body.subject}</li>
             <li>Message: ${req.body.description}</li>
         </ul>
@@ -53,7 +59,13 @@ emailController.post('/users',(req,res)=>{
 
 
 emailController.post('/offer',(req,res)=>{
- 
+  const {driveData} = req.body;
+  var mailList = []
+  driveData.appliedStudents.map(student=> {
+    if(student.rejected==false) {
+      mailList.push(student.email)
+    }
+  })
   var transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
@@ -64,14 +76,14 @@ emailController.post('/offer',(req,res)=>{
 
   var mailOptions = {
       from: 'ashutoshkarwa18@gmail.com',// sender address
-      to: 'akanshatripathi2601@gmail.com', // list of receivers
+      to: mailList, // list of receivers
       subject: req.body.subject, // Subject line
       text:req.body.description,
       html: `
       <div style="padding:10px;border-style: ridge">
       <h1>Congratulations!!</h1>
       <ul>
-          <li>Email:akanshatripathi2601@gmail.com </li>
+          <li>Email: From s2c-nexus@limited </li>
           <li>Subject: ${req.body.subject}</li>
           <li>Message: ${req.body.description}</li>
       </ul>
