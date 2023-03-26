@@ -5,7 +5,7 @@ const discussionController = express.Router();
 
 discussionController.get("/getMessages", (req, res) => {
     messageModel.find({}).then(messages => {
-        console.log(messages)
+        // console.log(messages)
       if (messages.length == 0) {
         res.json({ success: false, message: "No Open Discussion found" })
       } else {

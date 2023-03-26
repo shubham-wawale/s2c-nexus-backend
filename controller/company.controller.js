@@ -332,6 +332,20 @@ companyController.get("/allDrives", (req, res) => {
   })
 })
 
+companyController.get("/getAllDetailsCount", (req, res) => {
+  CompanyInfo.countDocuments({}).then(data => {
+    console.log(data)
+    if (data) {
+      
+      res.status(200).json({ success: true, count: data })
+    } else {
+      res.status(400).json({ success: false, message: "Company Records could not be fetched." })
+    }
+  }).catch(error => {
+    res.status(400).json({ success: false, error: error, message: "Company Records could not be fetched." })
+  })
+})
+
 
 export default companyController;
 

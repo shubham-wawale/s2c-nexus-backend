@@ -67,7 +67,12 @@ studentController.get("/getDetails", (req, res) => {
 studentController.get("/getAllDetails", (req, res) => {
   StudentInfo.find().then(data => {
     if (data) {
-      res.status(200).json({ success: true, studentData: data, message: "Student Records fetched successfully." })
+      console.log(data)
+      var offerCount=0
+      data.map(d=>{
+        offerCount+=d.offerCount
+      })
+      res.status(200).json({ success: true, offerCount:offerCount, studentData: data, message: "Student Records fetched successfully." })
     } else {
       res.status(400).json({ success: false, message: "Student Records fetched could not be fetched." })
     }
@@ -164,6 +169,20 @@ studentController.get("/getAppliedDrives", (req, res) => {
   })
   .catch(error=> {
     res.json({ success: false, message: error })
+  })
+})
+
+studentController.get("/getAllDetailsCount", (req, res) => {
+  StudentInfo.countDocuments({}).then(data => {
+    console.log(data)
+    if (data) {
+      
+      res.status(200).json({ success: true, count: data })
+    } else {
+      res.status(400).json({ success: false, message: "Student Records fetched could not be fetched." })
+    }
+  }).catch(error => {
+    res.status(400).json({ success: false, error: error, message: "Student Records could not be fetched." })
   })
 })
 
