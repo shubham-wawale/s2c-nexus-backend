@@ -74,7 +74,7 @@ const studentInfoSchema = new Schema({
     academicDetails: studentAcademicDetailsSchema,
     projectDetails: [studentProjectDetailsSchema],
     experienceDetails: [studentExperienceDetailsSchema],
-    offerCount: {type: Number, default: 1},
+    offerCount: {type: Number, default: 0},
     offers: {type: Array, "default": []}
 })
 
