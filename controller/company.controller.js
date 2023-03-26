@@ -296,7 +296,7 @@ companyController.post('/createDrive', (req, res) => {
 companyController.post('/updateDrive', (req, res) => {
   !req.body.driveId ? res.json({ success: false, error: 'Drive Id not recieved.' })
     : CompanyDrive.updateOne({ _id: req.body.driveId }, req.body.updatedData).then((err) => {
-      err.matchedCount == 1 ? res.status(200).json({
+      err.n == 1 ? res.status(200).json({
         success: true,
         message: `Updated drive ID ${req.body.driveId} successfully.`,
       })
