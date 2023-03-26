@@ -67,7 +67,6 @@ studentController.get("/getDetails", (req, res) => {
 studentController.get("/getAllDetails", (req, res) => {
   StudentInfo.find().then(data => {
     if (data) {
-      console.log(data)
       var offerCount=0
       data.map(d=>{
         offerCount+=d.offerCount
@@ -174,7 +173,6 @@ studentController.get("/getAppliedDrives", (req, res) => {
 
 studentController.get("/getAllDetailsCount", (req, res) => {
   StudentInfo.countDocuments({}).then(data => {
-    console.log(data)
     if (data) {
       
       res.status(200).json({ success: true, count: data })

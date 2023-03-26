@@ -8,7 +8,8 @@ import {
   companyController,
   studentController,
   discussionController,
-  emailController
+  emailController,
+  adminController
 } from './controller';
 
 // Init an Express App.
@@ -31,7 +32,7 @@ app.use("/company", companyController);
 app.use("/student", studentController);
 app.use("/discussion", discussionController);
 app.use("/email", emailController)
-
+app.use("/admin", adminController)
 
 // Start Server here
 app.listen(8080, () => {
