@@ -322,6 +322,16 @@ companyController.post("/deleteDrive", (req, res) => {
 })
 
 
+companyController.get("/allDrives", (req, res) => {
+  CompanyDrive.find({ }).then(drives => {
+    if (!drives) {
+      res.json({ success: false, message: "No drives found." })
+    } else {
+      res.json({ success: true, drives: drives })
+    }
+  })
+})
+
 
 export default companyController;
 
