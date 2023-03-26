@@ -64,6 +64,18 @@ studentController.get("/getDetails", (req, res) => {
   })
 })
 
+studentController.get("/getAllDetails", (req, res) => {
+  StudentInfo.find().then(data => {
+    if (data) {
+      res.status(200).json({ success: true, studentData: data, message: "Student Records fetched successfully." })
+    } else {
+      res.status(400).json({ success: false, message: "Student Records fetched could not be fetched." })
+    }
+  }).catch(error => {
+    res.status(400).json({ success: false, error: error, message: "Student Records could not be fetched." })
+  })
+})
+
 studentController.get("/drives", (req, res) => {
   const {studentData} = req.query
   CompanyDrive.find().then(drives => {
@@ -137,7 +149,6 @@ studentController.get("/getAppliedDrives", (req, res) => {
     } else {
       drives.map(drive=> {
         var studentData = drive.appliedStudents.filter(student=> student.id===studentId)
-        console.log(studentData)
         var customDriveObject = {
           driveName: drive.driveName,
           jobRole: drive.jobRole,
