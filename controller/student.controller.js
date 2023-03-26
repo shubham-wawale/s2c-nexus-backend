@@ -114,7 +114,7 @@ studentController.post("/updateDetails", (req, res) => {
     StudentInfo.updateOne({ _id: req.body.studentId },
       { [req.body.key]: req.body.newData }
       , { multi: true }).then(data => {
-        data.matchedCount == 1 ? res.status(200).json({
+        data.n == 1 ? res.status(200).json({
           success: true,
           message: `UPDATED STUDENT RECORD SUCCESSFULLY`
         }) :
@@ -125,6 +125,35 @@ studentController.post("/updateDetails", (req, res) => {
   } else {
     res.status(400).json({ success: false, message: "INVALID REQUEST OBJECT" })
   }
+})
+
+studentController.get("/getAppliedDrives", (req, res) => {
+  const {studentId} = req.query
+  var customisedDriveData = []
+  CompanyDrive.find({"appliedStudents.id": studentId})
+  .then(drives=> {
+    if(drives.length===0) {
+      res.json({ success: false, message: "No drives found." })
+    } else {
+      drives.map(drive=> {
+        var studentData = drive.appliedStudents.filter(student=> student.id===studentId)
+        console.log(studentData)
+        var customDriveObject = {
+          driveName: drive.driveName,
+          jobRole: drive.jobRole,
+          ctcOffered: drive.ctcOffered,
+          isRejected: studentData[0].rejected,
+          interviewCleared: studentData[0].interviewCleared,
+          testCleared: studentData[0].testCleared
+        }
+        customisedDriveData.push(customDriveObject)
+      })
+      res.json({ success: true, message: "Applied Drives found", drives: customisedDriveData })
+    }
+  })
+  .catch(error=> {
+    res.json({ success: false, message: error })
+  })
 })
 
 export default studentController;

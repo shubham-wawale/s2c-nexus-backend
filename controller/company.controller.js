@@ -140,6 +140,7 @@ companyController.post("/filterStudentsByTest",async  (req, res) => {
     arrayFilters: [
       {
         "element.email": {$in: studentEmails},
+        "element.rejected": false
       },
     ],
   }
@@ -147,16 +148,15 @@ companyController.post("/filterStudentsByTest",async  (req, res) => {
     arrayFilters: [
       {
         "element.email": {$nin: studentEmails},
+        "element.rejected": false
       },
     ],
   }
   CompanyDrive.updateOne(query, updateNotClearedTest, rejectedEmailsFilter)
     .then(firstUpdate => {
-    console.log(firstUpdate)
     if(firstUpdate.n >=1 ) {
       CompanyDrive.updateOne(query, updateClearedTest, acceptedEmailsFilter)
       .then(secondUpdate=>{
-        console.log(secondUpdate)
         secondUpdate.n >= 1 ? res.status(200).json({
           success: true,
           message: `Students filtered in drive successfully by test.`
@@ -172,7 +172,7 @@ companyController.post("/filterStudentsByTest",async  (req, res) => {
 companyController.post("/filterStudentsByInterview",async  (req, res) => {
   const { studentEmails, driveId } = req.body
   
-  const query = {_id: driveId }
+  const query = {_id: driveId}
 
   const updateClearedInterview = {
     $set: { 
@@ -190,6 +190,7 @@ companyController.post("/filterStudentsByInterview",async  (req, res) => {
     arrayFilters: [
       {
         "element.email": {$in: studentEmails},
+        "element.rejected": false 
       },
     ],
   }
@@ -197,16 +198,15 @@ companyController.post("/filterStudentsByInterview",async  (req, res) => {
     arrayFilters: [
       {
         "element.email": {$nin: studentEmails},
+        "element.rejected": false 
       },
     ],
   }
   CompanyDrive.updateOne(query, updateNotClearedInterview, rejectedEmailsFilter)
     .then(firstUpdate => {
-    console.log(firstUpdate)
     if(firstUpdate.n >=1 ) {
       CompanyDrive.updateOne(query, updateClearedInterview, acceptedEmailsFilter)
       .then(secondUpdate=>{
-        console.log(secondUpdate)
         secondUpdate.n >= 1 ? res.status(200).json({
           success: true,
           message: `Students filtered in drive successfully by interview.`
