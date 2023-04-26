@@ -133,13 +133,13 @@ emailController.post('/offer', (req, res) => {
   var transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-      user: 'ashutoshkarwa18@gmail.com',
-      pass: 'hpurduewakvqhubl'
+      user: 's2cnexus@gmail.com',
+      pass: 'fsoiaxencpjwbmjj'
     }
   });
 
   var mailOptions = {
-    from: 'ashutoshkarwa18@gmail.com',// sender address
+    from: 's2cnexus@gmail.com',// sender address
     to: mailList, // list of receivers
     subject: req.body.subject, // Subject line
     text: req.body.description,
