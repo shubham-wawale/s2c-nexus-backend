@@ -1,7 +1,7 @@
 import express from 'express';
 import sha256 from 'sha256';
 import {
-  CompanyUser, CompanyInfo, CompanyDrive, AppliedStudentDrive,
+  CompanyInfo, CompanyDrive
 } from '../database/models';
 
 const companyController = express.Router();
@@ -22,11 +22,6 @@ companyController.post('/login', (req, res) => {
     });
 });
 
-/**
- * POST/
- * Add a new User to your database
- */
-
 companyController.post('/signup', (req, res) => {
   if (req.body) {
     const {
@@ -43,9 +38,7 @@ companyController.post('/signup', (req, res) => {
     CompanyInfo.find({ email }).then((company) => {
       if (company.length == 0) {
         const newCompany = new CompanyInfo(companyData);
-        newCompany
-          .save()
-          .then((data) => {
+        newCompany.save().then((data) => {
             res.status(200).json({ success: true, companyId: data._id, message: 'Company registration successful.' });
           })
           .catch((err) => {
@@ -95,7 +88,7 @@ companyController.get('/appliedStudentsDrive', (req, res) => {
 
 companyController.post('/addStudentToDrive', (req, res) => {
   const { studentData, driveId } = req.body;
-
+  //change document variable to drive variable
   CompanyDrive.find({ _id: driveId, 'appliedStudents.id': studentData.id }).then((document) => {
     if (document.length == 1) {
       res.json({
@@ -105,6 +98,7 @@ companyController.post('/addStudentToDrive', (req, res) => {
     } else {
       CompanyDrive.updateOne({ _id: driveId }, { $push: { appliedStudents: studentData } })
         .then((update) => {
+          //replace ternary with if else
           update.n == 1 ? res.status(200).json({
             success: true,
             message: 'Student applied to drive successfully.',
@@ -157,7 +151,7 @@ companyController.post('/filterStudentsByTest', async (req, res) => {
           .then((secondUpdate) => {
             secondUpdate.n >= 1 ? res.status(200).json({
               success: true,
-              message: 'Students filtered in drive successfully by test.',
+              message: 'Students filtered in drive by test scores successfully.',
             })
               : res.json({ success: false, message: 'Could not update students.' });
           });
@@ -207,7 +201,7 @@ companyController.post('/filterStudentsByInterview', async (req, res) => {
           .then((secondUpdate) => {
             secondUpdate.n >= 1 ? res.status(200).json({
               success: true,
-              message: 'Students filtered in drive successfully by interview.',
+              message: 'Students filtered in drive by interview successfully.',
             })
               : res.json({ success: false, message: 'Could not update students.' });
           });
@@ -261,6 +255,7 @@ companyController.post('/createDrive', (req, res) => {
     skillsRequired,
   } = req.body;
 
+  //find solution for this double assigning
   const companyDriveData = {
     companyId,
     driveName,
@@ -294,9 +289,10 @@ companyController.post('/createDrive', (req, res) => {
 });
 
 companyController.post('/updateDrive', (req, res) => {
+  //replace with if else to ensure consistency
   !req.body.driveId ? res.json({ success: false, error: 'Drive Id not recieved.' })
-    : CompanyDrive.updateOne({ _id: req.body.driveId }, req.body.updatedData).then((err) => {
-      err.n == 1 ? res.status(200).json({
+    : CompanyDrive.updateOne({ _id: req.body.driveId }, req.body.updatedData).then((updated) => {
+      updated.n == 1 ? res.status(200).json({
         success: true,
         message: `Updated drive ID ${req.body.driveId} successfully.`,
       })
@@ -308,8 +304,8 @@ companyController.post('/updateDrive', (req, res) => {
 
 companyController.post('/deleteDrive', (req, res) => {
   !req.body.driveId ? res.json({ success: false, error: 'Drive Id not recieved.' })
-    : CompanyDrive.deleteOne({ _id: req.body.driveId }).then((err) => {
-      err.deletedCount == 1 ? res.status(200).json({
+    : CompanyDrive.deleteOne({ _id: req.body.driveId }).then((deleted) => {
+      deleted.deletedCount == 1 ? res.status(200).json({
         success: true,
         message: `Deleted drive ID ${req.body.driveId} successfully.`,
       })

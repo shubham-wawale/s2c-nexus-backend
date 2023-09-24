@@ -15,16 +15,16 @@ const higherSecondaryDetailsSchema = new Schema({
     passingYear: {type: String}
 })
 
-const semesterSchema = new Schema({
-    semester: {type: String},
-    gpa: {type: String},
-    marksheet: {data: Buffer, contentType: String}
-})
+// const semesterSchema = new Schema({
+//     semester: {type: String},
+//     gpa: {type: String},
+//     marksheet: {data: Buffer, contentType: String}
+// })
 
-const degreeDetailsSchema = new Schema({
+// const degreeDetailsSchema = new Schema({
     
     
-})
+// })
 
 const studentPersonalDetailsSchema = new Schema({
     name: {type: String},

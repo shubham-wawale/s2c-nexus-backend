@@ -28,9 +28,9 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 // use all controllers(APIs) here
-app.use("/company", companyController);
-app.use("/student", studentController);
-app.use("/discussion", discussionController);
+app.use("/company", companyController)
+app.use("/student", studentController)
+app.use("/discussion", discussionController)
 app.use("/email", emailController)
 app.use("/admin", adminController)
 
@@ -38,6 +38,6 @@ app.use("/admin", adminController)
 app.listen(8080, () => {
   console.log('Example app listening on port 8080!');
   mongoose.connect(process.env.DB_HOST).then(() => {
-    console.log(`Conneted to mongoDB at port 27017`);
+    console.log(`Conneted to mongoDB cloud`);
   });
 });

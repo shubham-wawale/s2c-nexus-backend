@@ -5,10 +5,10 @@ const discussionController = express.Router();
 
 discussionController.get("/getMessages", (req, res) => {
     messageModel.find({}).then(messages => {
-        // console.log(messages)
       if (messages.length == 0) {
         res.json({ success: false, message: "No Open Discussion found" })
       } else {
+        //change message_data variable and update message value
           res.json({ success: true, message_data: messages, message: "" })  
       }
     })
@@ -23,6 +23,7 @@ discussionController.get("/getMessages", (req, res) => {
       if (!message) {
         res.json({ success: false, message: "Message Not Found" })
       } else {
+        //update message value
           res.json({ success: true, data: message, message: "" })  
       }
     })

@@ -1,3 +1,4 @@
+//Check if these many imports are required 
 const path = require('path');
 const express = require('express');
 const nodemailer = require('nodemailer');
@@ -143,6 +144,7 @@ emailController.post('/offer', (req, res) => {
     to: mailList, // list of receivers
     subject: req.body.subject, // Subject line
     text: req.body.description,
+    //update student name - replace akansha with variable
     html: `
       <div style="padding:10px;border-style: ridge">
       <h1>Congratulations!!</h1>

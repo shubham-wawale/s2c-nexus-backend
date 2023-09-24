@@ -14,6 +14,7 @@ adminController.get("/login", (req, res) => {
       if (user.hashedPassword != sha256(password)) {
         res.json({ success: false, message: "Incorrect Password" })
       } else {
+        //replace returning IDs with JWT token
         res.json({ success: true, adminId: user._id, message: "Admin successfully logged in." })
       }
     }
@@ -30,10 +31,6 @@ adminController.post("/signup", (req, res) => {
       email: email,
       hashedPassword: sha256(password)
     }
-    // const adminData = {
-    //   credentials: credentials
-    // }
-
     AdminInfo.find({ 'credentials.email': email }).then(admin => {
       if (admin.length == 0) {
         const adminInfo = new AdminInfo(credentials)
@@ -52,4 +49,4 @@ adminController.post("/signup", (req, res) => {
 
 })
 
-export default adminController
+export default adminController;
