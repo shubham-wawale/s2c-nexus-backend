@@ -16,7 +16,7 @@ import {
 const app = express();
 app.use(
   cors({
-    origin: "https://s2c-nexus-frontend.vercel.app",
+    origin: "https://s2c-nexus.vercel.app",
     methods: ['GET', 'POST'],
     credentials: true,
   }),
